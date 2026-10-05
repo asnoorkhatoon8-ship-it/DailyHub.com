@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Hub – Tasks, Notes, Converter, Bill Splitter & Timer</title>
+<meta name="description" content="Daily Hub: a fast, beautiful set of everyday tools. Manage tasks, take notes, convert units, split bills and focus with a timer.">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="Daily Hub">
+<meta property="og:description" content="Simple, premium tools for everyday life, all in one place.">
+<meta property="og:type" content="website">
+<style>
+:root{--bg:#f4f5fb;--card:rgba(255,255,255,.75);--inp:#fff;--ink:#0f172a;--mut:#64748b;--line:rgba(15,23,42,.09);--acc:#6366f1;--acc2:rgba(99,102,241,.12);--grad:linear-gradient(135deg,#6366f1,#8b5cf6);--bad:#ef4444;--sh:0 1px 2px rgba(15,23,42,.04),0 10px 30px rgba(79,70,229,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0e1f;--card:rgba(24,30,56,.7);--inp:rgba(255,255,255,.05);--ink:#eef1fb;--mut:#9aa6c4;--line:rgba(255,255,255,.09);--acc:#8b8ff8;--acc2:rgba(139,143,248,.16);--sh:0 10px 30px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#0a0e1f;--card:rgba(24,30,56,.7);--inp:rgba(255,255,255,.05);--ink:#eef1fb;--mut:#9aa6c4;--line:rgba(255,255,255,.09);--acc:#8b8ff8;--acc2:rgba(139,143,248,.16);--sh:0 10px 30px rgba(0,0,0,.35)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(600px 400px at 85% -5%,rgba(139,92,246,.22),transparent),radial-gradient(500px 400px at -5% 20%,rgba(99,102,241,.18),transparent)}
+.wrap{max-width:620px;margin:0 auto;padding:22px 16px 130px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:13px;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(99,102,241,.4)}
+h1{font-size:1.1rem;margin:0;font-weight:700;letter-spacing:-.01em}.date{color:var(--mut);font-size:.8rem}
+.hello{margin:0 0 4px;font-size:1.9rem;font-weight:750;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--mut);margin:0 0 20px}
+svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn{width:44px;height:44px;border-radius:13px;border:1px solid var(--line);background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.card{background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--sh)}
+.card h2{font-size:1.1rem;margin:0 0 2px;font-weight:700}.card .d{color:var(--mut);font-size:.88rem;margin:0 0 16px}
+label{display:block;font-size:.72rem;font-weight:650;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--inp);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-height:48px;margin-bottom:14px;outline:0;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 4px var(--acc2)}
+.btn,.chip,.icon-btn,.dock button{position:relative;overflow:hidden;transition:transform .15s cubic-bezier(.3,1.5,.5,1),box-shadow .2s;user-select:none;touch-action:manipulation}
+.btn:active,.chip:active,.icon-btn:active{transform:scale(.94)}
+.btn{background:var(--grad);color:#fff;border:0;border-radius:14px;padding:0 22px;min-height:48px;font:inherit;font-weight:650;cursor:pointer;box-shadow:0 6px 16px rgba(99,102,241,.35)}
+.btn.g{background:var(--inp);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.rp{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rp .55s ease-out forwards;pointer-events:none}
+.g .rp,.chip .rp,.icon-btn .rp,.dock .rp{background:var(--acc2)}
+@keyframes rp{to{transform:scale(1);opacity:0}}
+.row{display:flex;gap:10px;align-items:flex-start}.row>*{flex:1}.row .fix{flex:0 0 auto}
+.chips{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--inp);color:var(--mut);padding:0 16px;min-height:38px;border-radius:999px;font:inherit;font-size:.88rem;cursor:pointer}
+.chip.on{background:var(--acc2);color:var(--acc);border-color:transparent;font-weight:650}
+.prog{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:2px 0 14px}.prog i{display:block;height:100%;width:0;background:var(--grad);border-radius:99px;transition:width .5s cubic-bezier(.3,1,.4,1)}
+.sw{position:relative;overflow:hidden;border-radius:14px;margin-bottom:8px;background:var(--bad)}
+.sw::after{content:"Delete";position:absolute;right:18px;top:50%;transform:translateY(-50%);color:#fff;font-weight:650;font-size:.85rem}
+.item{position:relative;z-index:1;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:14px;transition:transform .25s cubic-bezier(.3,1,.4,1);touch-action:pan-y;min-height:54px}
+.item input{width:22px;height:22px;margin:0;min-height:0;accent-color:var(--acc)}.item span{flex:1;word-break:break-word}
+.item.dn span{text-decoration:line-through;color:var(--mut)}
+.x{background:none;border:0;color:var(--mut);cursor:pointer;width:36px;height:36px;border-radius:10px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--mut);font-size:.88rem}
+.empty{text-align:center;color:var(--mut);padding:30px 0 14px}.empty b{display:block;font-size:2rem}
+textarea{min-height:270px;resize:vertical}
+.res{background:var(--acc2);border-radius:18px;padding:18px;text-align:center}
+.res b{display:block;font-size:2rem;letter-spacing:-.02em;color:var(--acc)}.res small{color:var(--mut)}
+.sum{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);color:var(--mut)}.sum span:last-child{color:var(--ink);font-weight:650}
+.step{display:flex;gap:8px;margin-bottom:14px}.step input{text-align:center;margin:0}.step .btn{padding:0;width:52px;font-size:1.3rem;flex:0 0 52px}
+.ring{position:relative;width:210px;height:210px;margin:4px auto 20px}
+.ring svg{width:210px;height:210px;transform:rotate(-90deg);stroke-width:7}.ring circle:last-child{transition:stroke-dashoffset 1s linear}
+.ring .t{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.panel{display:none}.panel.on{display:block}.panel.anim{animation:in .35s cubic-bezier(.3,1,.4,1)}
+@keyframes in{from{opacity:0;transform:translateX(var(--dx,0))}to{opacity:1;transform:none}}
+.dock{position:fixed;left:0;right:0;bottom:0;padding:0 14px calc(14px + env(safe-area-inset-bottom,0px));pointer-events:none;z-index:10}
+.dock nav{pointer-events:auto;position:relative;display:flex;max-width:480px;margin:0 auto;padding:6px;background:var(--card);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 40px rgba(15,23,42,.18)}
+.dock button{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:var(--mut);padding:8px 0 6px;border-radius:18px;font:inherit;font-size:.68rem;font-weight:600;cursor:pointer;transition:color .25s}
+.dock button.on{color:#fff}
+#ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/5);background:var(--grad);border-radius:18px;box-shadow:0 6px 16px rgba(99,102,241,.4);transition:transform .4s cubic-bezier(.3,1.3,.5,1)}
+.hint{text-align:center;color:var(--mut);font-size:.78rem;margin-top:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="main">
+ <header>
+  <div class="brand"><div class="logo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></div><div><h1>Daily Hub</h1><div class="date" id="date"></div></div></div>
+  <button class="icon-btn" id="th" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+ </header>
+ <p class="hello" id="greet"></p><p class="lead">Simple tools for everyday life.</p>
+
+ <section class="card panel" id="tasks">
+  <h2>Tasks</h2><p class="d">Swipe a task left to delete it.</p>
+  <div class="prog"><i id="pg"></i></div>
+  <div class="row"><input id="ti" placeholder="Add a new task" aria-label="New task" enterkeyhint="done"><button class="btn fix" id="ta">Add</button></div>
+  <div class="chips" id="chips"></div><div id="tl"></div>
+  <div class="bar"><span id="tc"></span><button class="chip" id="clr">Clear done</button></div>
+ </section>
+
+ <section class="card panel" id="notes">
+  <h2>Notes</h2><p class="d">Saved automatically on this device.</p>
+  <textarea id="nt" placeholder="Grocery list, ideas, reminders…" aria-label="Notes"></textarea>
+  <div class="bar"><span id="wc"></span><span id="sv"></span></div>
+ </section>
+
+ <section class="card panel" id="conv">
+  <h2>Unit converter</h2><p class="d">Convert common measurements instantly.</p>
+  <label>Category</label><select id="ct"></select>
+  <label>Value</label><input id="cv" type="number" value="1" inputmode="decimal">
+  <div class="row"><div><label>From</label><select id="cf"></select></div>
+   <button class="icon-btn fix" id="swp" style="margin-top:24px" aria-label="Swap units"><svg viewBox="0 0 24 24"><path d="M7 4v14M3 14l4 4 4-4M17 20V6M13 10l4-4 4 4"/></svg></button>
+   <div><label>To</label><select id="cto"></select></div></div>
+  <div class="res"><small id="cl"></small><b id="co"></b></div>
+ </section>
+
+ <section class="card panel" id="split">
+  <h2>Bill splitter</h2><p class="d">Share a bill fairly, with optional tip.</p>
+  <label>Bill amount (₹)</label><input id="sb" type="number" value="1200" min="0" inputmode="decimal">
+  <label>Tip</label><div class="chips" id="tips"></div><input id="st" type="hidden" value="10">
+  <label>People</label><div class="step"><button class="btn g" id="pm" aria-label="Fewer">−</button><input id="sp" type="number" value="3" min="1" inputmode="numeric"><button class="btn g" id="pp" aria-label="More">+</button></div>
+  <div class="sum"><span>Tip</span><span id="s1"></span></div><div class="sum" style="margin-bottom:14px"><span>Total</span><span id="s2"></span></div>
+  <div class="res"><small>Each person pays</small><b id="so"></b></div>
+ </section>
+
+ <section class="card panel" id="timer">
+  <h2>Focus timer</h2><p class="d">Stay in the zone, one session at a time.</p>
+  <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" stroke="var(--line)"/><circle id="pr" cx="50" cy="50" r="45" stroke="var(--acc)" stroke-dasharray="282.74" stroke-dashoffset="0"/></svg><div class="t" id="tm"></div></div>
+  <div class="chips" style="justify-content:center" id="pre"></div>
+  <div class="row"><button class="btn" id="tgo">Start</button><button class="btn g" id="trs">Reset</button></div>
+ </section>
+ <p class="hint">Tip: swipe left or right to switch tools</p>
+</div>
+<div class="dock"><nav id="nav"><div id="ind"></div></nav></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const ld=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const hap=(n=10)=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};
+const dark=()=>{const t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches};
+const hr=new Date().getHours();
+$('greet').textContent=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+$('date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+$('th').onclick=()=>{document.documentElement.dataset.theme=dark()?'light':'dark';hap(8)};
+
+// ripple + press haptics
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('.btn,.chip,.icon-btn,.dock button');if(!b)return;
+ const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2,sp=document.createElement('span');sp.className='rp';
+ sp.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;b.appendChild(sp);setTimeout(()=>sp.remove(),600)});
+
+// navigation
+const IC={tasks:'<path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>',notes:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/>',conv:'<path d="M4 8h14l-4-4M20 16H6l4 4"/>',split:'<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>'};
+const N={tasks:'Tasks',notes:'Notes',conv:'Convert',split:'Split',timer:'Timer'},K=Object.keys(N);let cur=-1;
+K.forEach(k=>{const b=document.createElement('button');b.id='b'+k;b.innerHTML='<svg viewBox="0 0 24 24">'+IC[k]+'</svg>'+N[k];b.onclick=()=>{hap(8);show(K.indexOf(k))};$('nav').appendChild(b)});
+function show(i){if(i<0||i>=K.length||i===cur)return;const dir=i>cur?1:-1;cur=i;
+ K.forEach((k,j)=>{const p=$(k);p.classList.toggle('on',j===i);$('b'+k).classList.toggle('on',j===i);
+  if(j===i){p.style.setProperty('--dx',dir*28+'px');p.classList.remove('anim');void p.offsetWidth;p.classList.add('anim')}});
+ $('ind').style.transform=`translateX(${i*100}%)`;scrollTo({top:0,behavior:'smooth'})}
+show(0);
+
+// swipe between tabs
+let sx=0,sy=0,ok=false;
+$('main').addEventListener('touchstart',e=>{ok=!e.target.closest('.sw,textarea,input,select');sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+$('main').addEventListener('touchend',e=>{if(!ok)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+ if(Math.abs(dx)>70&&Math.abs(dy)<45){hap(10);show(cur+(dx<0?1:-1))}},{passive:true});
+
+// Tasks
+let T=ld('tasks',[]),F='all';
+['all','active','done'].forEach(f=>{const c=document.createElement('button');c.className='chip';c.textContent=f[0].toUpperCase()+f.slice(1);c.onclick=()=>{F=f;drawT()};c.id='f'+f;$('chips').appendChild(c)});
+function drawT(){$('tl').innerHTML='';['all','active','done'].forEach(f=>$('f'+f).classList.toggle('on',F===f));
+ const L=T.map((t,i)=>({t,i})).filter(o=>F==='all'||(F==='done')===o.t.d);
+ if(!L.length)$('tl').innerHTML='<div class="empty"><b>'+(T.length?'🔍':'✨')+'</b>'+(T.length?'Nothing in this view.':'You\'re all clear. Add your first task.')+'</div>';
+ L.forEach(({t,i})=>{const w=document.createElement('div');w.className='sw';
+  w.innerHTML='<div class="item'+(t.d?' dn':'')+'"><input type="checkbox" aria-label="Done"'+(t.d?' checked':'')+'><span></span><button class="x" aria-label="Delete"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+  const it=w.firstChild;it.querySelector('span').textContent=t.t;
+  const del=()=>{it.style.transform='translateX(-110%)';setTimeout(()=>{T.splice(i,1);sv('tasks',T);drawT()},220)};
+  it.querySelector('input').onchange=()=>{t.d=!t.d;hap(12);sv('tasks',T);drawT()};
+  it.querySelector('.x').onclick=()=>{hap(12);del()};
+  let x0=0,dx=0;
+  it.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;dx=0;it.style.transition='none'},{passive:true});
+  it.addEventListener('touchmove',e=>{dx=Math.min(0,e.touches[0].clientX-x0);it.style.transform=`translateX(${dx}px)`},{passive:true});
+  it.addEventListener('touchend',()=>{it.style.transition='';if(dx<-100){hap(18);del()}else it.style.transform=''});
+  $('tl').appendChild(w)});
+ const d=T.filter(t=>t.d).length;$('pg').style.width=(T.length?d/T.length*100:0)+'%';
+ $('tc').textContent=T.length&&d===T.length?'🎉 All done!':(T.length-d)+' remaining'}
+function addT(){const v=$('ti').value.trim();if(!v)return;T.unshift({t:v,d:false});$('ti').value='';hap(10);sv('tasks',T);drawT()}
+$('ta').onclick=addT;$('ti').onkeydown=e=>{if(e.key==='Enter')addT()};
+$('clr').onclick=()=>{T=T.filter(t=>!t.d);hap(10);sv('tasks',T);drawT()};drawT();
+
+// Notes
+const wc=()=>{const w=$('nt').value.trim().split(/\s+/).filter(Boolean).length;$('wc').textContent=w+' word'+(w===1?'':'s')};
+$('nt').value=ld('notes','');wc();$('nt').oninput=()=>{sv('notes',$('nt').value);wc();$('sv').textContent='Saved ✓'};
+
+// Converter
+const U={Length:{Metre:1,Kilometre:1000,Centimetre:.01,Mile:1609.344,Foot:.3048,Inch:.0254},Weight:{Kilogram:1,Gram:.001,Pound:.45359237,Ounce:.028349523},Volume:{Litre:1,Millilitre:.001,Cup:.2365882,'Fluid ounce':.0295735,Gallon:3.785411},Temperature:{Celsius:0,Fahrenheit:0,Kelvin:0}};
+Object.keys(U).forEach(k=>$('ct').add(new Option(k)));
+function fill(){const u=Object.keys(U[$('ct').value]);[$('cf'),$('cto')].forEach((s,i)=>{s.innerHTML='';u.forEach(x=>s.add(new Option(x)));s.selectedIndex=i?1:0});calc()}
+function calc(){const t=$('ct').value,v=parseFloat($('cv').value),f=$('cf').value,o=$('cto').value;let r;
+ if(isNaN(v)){$('co').textContent='—';return}
+ if(t==='Temperature'){const c=f==='Celsius'?v:f==='Fahrenheit'?(v-32)*5/9:v-273.15;r=o==='Celsius'?c:o==='Fahrenheit'?c*9/5+32:c+273.15}else r=v*U[t][f]/U[t][o];
+ $('cl').textContent=v+' '+f+' =';$('co').textContent=(+r.toFixed(4)).toLocaleString()+' '+o}
+$('ct').onchange=fill;['cv','cf','cto'].forEach(i=>$(i).oninput=calc);
+$('swp').onclick=()=>{const a=$('cf').selectedIndex;$('cf').selectedIndex=$('cto').selectedIndex;$('cto').selectedIndex=a;hap(8);calc()};fill();
+
+// Split
+const R=n=>'₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+function sp(){const b=+$('sb').value||0,t=+$('st').value||0,p=Math.max(1,Math.floor(+$('sp').value)||1),tip=b*t/100;
+ $('s1').textContent=R(tip);$('s2').textContent=R(b+tip);$('so').textContent=R((b+tip)/p)}
+[0,5,10,15,20].forEach(v=>{const c=document.createElement('button');c.className='chip'+(v===10?' on':'');c.textContent=v+'%';c.onclick=()=>{$('st').value=v;[...$('tips').children].forEach(x=>x.classList.toggle('on',x===c));hap(8);sp()};$('tips').appendChild(c)});
+$('pm').onclick=()=>{$('sp').value=Math.max(1,(+$('sp').value||1)-1);hap(8);sp()};
+$('pp').onclick=()=>{$('sp').value=(+$('sp').value||1)+1;hap(8);sp()};
+['sb','sp'].forEach(i=>$(i).oninput=sp);sp();
+
+// Timer
+let tot=1500,sec=1500,iv=null;
+function fmt(){$('tm').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');$('pr').style.strokeDashoffset=282.74*(1-sec/tot)}
+function stop(){clearInterval(iv);iv=null;$('tgo').textContent='Start'}
+[5,10,25,45].forEach(m=>{const b=document.createElement('button');b.className='chip';b.textContent=m+' min';b.onclick=()=>{stop();tot=sec=m*60;hap(8);fmt()};$('pre').appendChild(b)});
+$('tgo').onclick=()=>{hap(12);if(iv){stop();return}if(sec<=0)return;$('tgo').firstChild.textContent='Pause';
+ iv=setInterval(()=>{sec--;fmt();if(sec<=0){stop();hap([200,100,200,100,300]);alert('Time is up.')}},1000)};
+$('trs').onclick=()=>{stop();sec=tot;hap(8);fmt()};fmt();
+</script>
+</body>
+</html>
